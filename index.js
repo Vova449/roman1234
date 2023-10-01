@@ -28,13 +28,36 @@ function startProgram() {
 
 function generateQuestion() {
     let question = allQuestions[currentQuestion].question
-    main.innerHTML = `<h1 class="question">${question}</h1>`
+    main.innerHTML = `<h1 class="my-5" style="font-size: 100px !important">${question}</h1>`
 
     let answers = allQuestions[currentQuestion].answers
     let bnt_block = ""
     for (let i of answers) {
-        bnt_block += `<button class="btn" onclick="checkQuestion(${i})">${i}</button>`
+        bnt_block += `<button class="btn btn-outline-primary fs-1" onclick="checkQuestion(${i})">${i}</button>`
 
     }
-    main.innerHTML += `<nav class="btn_block">${bnt_block}</nav>`
+    main.innerHTML += `<nav class="d-flex justify-content-between" style="width: 50vw !important">${bnt_block}</nav>`
+}
+
+function checkQuestion(num) {
+    let correct = allQuestions[currentQuestion].correct;
+    if (num == correct) {
+        countSuccess += 1;
+    }
+    currentQuestion += 1;
+    if (allQuestions.length > currentQuestion) {
+        generateQuestion();
+    } else {
+        stopQuiz();
+    }
+}
+
+function stopQuiz() {
+    start.classList.remove("none")
+    main.classList.add("none")
+    result.classList.remove("none")
+    result.innerHTML = `Решено ${countSuccess} из ${allQuestions.length}`
+
+    currentQuestion = 0
+    countSuccess = 0
 }
